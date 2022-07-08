@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.chatApp.repository.UserRepository">
+
+<resultMap id="userMap" type="com.example.chatApp.domain.User">
+		<id			property="userId"			column="user_id" ></id>
+		<result 	property="name"				column="name" ></result>
+		<result 	property="mail"				column="mail" ></result>
+		<result 	property="pass"				column="pass"></result>
+		<result 	property="pictureFk"		column="picture_fk" ></result>
+		<result 	property="createdTime"		column="created_time" />
+		<result 	property="updatedTime"		column="updated_time" />
+		<result 	property="deleted"  		column="deleted" />
+	</resultMap>
+
+  <select id="searchUser" resultMap="userMap">
+	SELECT * FROM users WHERE user_id = #{userId};
+  </select>
+
+  <insert id="addUser" useGeneratedKeys="true" keyProperty="user_id">
+  	INSERT INTO users (name,mail,pass,picture_fk,created_time,updated_time,deleted)
+  	 VALUES (#{name},#{mail},#{pass},#{pictureFk},#{createdTime},#{updatedTime},#{deleted})
+  	<selectKey resultType="int" keyProperty="user_id" order="AFTER">
+        	select @IDENTITY
+	</selectKey>
+  </insert>
+
+  <update id="updateUser">
+		UPDATE
+		users 
+		<set>
+			<if test="name != null">name = #{name},</if>
+			<if test="mail != null">mail = #{mail},</if>
+			<if test="pass != null">pass = #{pass} ,</if>
+			<if test="pictureFk != null">picture_fk = #{pictureFk},</if>
+			<if test="deleted != null">deleted = #{deleted}</if>
+			updated_time = now() 
+		</set>
+		WHERE
+		user_id = #{userId};
+	</update>
+
+</mapper>

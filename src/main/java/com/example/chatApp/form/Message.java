@@ -1,4 +1,4 @@
-package com.example.chatApp.domain;
+package com.example.chatApp.form;
 
 public class Message {
 

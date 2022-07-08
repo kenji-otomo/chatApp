@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
 import com.example.chatApp.domain.Greeting;
-import com.example.chatApp.domain.Message;
+import com.example.chatApp.form.Message;
 
 @RestController
 public class ChatController {
