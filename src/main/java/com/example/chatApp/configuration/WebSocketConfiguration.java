@@ -20,16 +20,16 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		// クライアント側から最初にWebSocketを繋ぐ際のつなぎ先（エンドポイント）を定義、SockJSを使うことも一緒に宣言
-		registry.addEndpoint("/gs-guide-websocket").withSockJS();
+		registry.addEndpoint("/websocket").withSockJS();
 	}
 
 	// 
 	@Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-		// 受け取り口の設定定義
-		registry.enableSimpleBroker("/topic");
-		// 送付先のプレフィックスを定義
-        registry.setApplicationDestinationPrefixes("/chat");
+		// 受信エンドポイントの設定（受け取り口の設定定義）
+		registry.enableSimpleBroker("/topics");
+		// 送信エンドポイントの設定（送付先のプレフィックスを定義）
+        registry.setApplicationDestinationPrefixes("/send");
 	}
 	
 	
