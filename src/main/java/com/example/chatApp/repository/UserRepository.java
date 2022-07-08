@@ -22,7 +22,7 @@ public interface UserRepository {
 	/**
 	 * ユーザをインサートする
 	 * @param user
-	 * @return user (PK入り)
+	 * @return user (自動採番されたPK入り)
 	 */
 	public User addUser(User user);
 	
