@@ -3,6 +3,7 @@ package com.example.chatApp.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,16 +48,21 @@ public class UserController {
 	 * @return　チャット画面
 	 */
 	@PostMapping("/createUser")
-	public String createUser(@Validated AddUserForm form, BindingResult result) {
+	public String createUser(@Validated AddUserForm form, BindingResult result, Model model) {
 		
+		// バリデーションに引っかかった場合
 		if (result.hasErrors()) {
+			return "createUser";
+		}
+		// パスワードが一致しなかった場合
+		if (!form.getPass().equals(form.getConfirmPass())) {
+			model.addAttribute("passerror", "パスワードが一致していません");
 			return "createUser";
 		}
 		
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
 		user = userService.addUser(user);
-		
 		return "redirect:/index/page";
 	}
 }

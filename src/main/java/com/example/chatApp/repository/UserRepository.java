@@ -24,7 +24,7 @@ public interface UserRepository {
 	 * @param user
 	 * @return user (自動採番されたPK入り)
 	 */
-	public User addUser(User user);
+	public void addUser(User user);
 	
 	/**
 	 * ユーザを更新する（セットされた項目のみを更新）

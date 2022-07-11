@@ -6,7 +6,7 @@
 <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <form th:action="@{/user/addUser}" method="post" th:object="${addUserForm}">
+    <form th:action="@{/user/createUser}" method="post" th:object="${addUserForm}">
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name">
         <br>
@@ -17,6 +17,7 @@
         <input type="password" th:field="*{pass}" id="pass">
         <label for="confirmPass">ConfirmPassword</label>
         <input type="password" th:field="*{confirmPass}" id="confirmPass">
+        <button type="submit">登録</button>
     </form>
 </body>
 </html>
