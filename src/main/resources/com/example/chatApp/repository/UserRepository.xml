@@ -20,10 +20,10 @@
 	SELECT * FROM users WHERE user_id = #{userId};
   </select>
 
-  <insert id="addUser" useGeneratedKeys="true" keyProperty="user_id">
+  <insert id="addUser" useGeneratedKeys="true" keyProperty="userId">
   	INSERT INTO users (name,mail,pass,picture_fk,created_time,updated_time,deleted)
-  	 VALUES (#{name},#{mail},#{pass},#{pictureFk},#{createdTime},#{updatedTime},#{deleted})
-  	<selectKey resultType="int" keyProperty="user_id" order="AFTER">
+  	 VALUES (#{name},#{mail},#{pass},#{pictureFk},now(),now(),#{deleted})
+  	<selectKey resultType="int" keyProperty="userId" order="AFTER">
         	select @IDENTITY
 	</selectKey>
   </insert>
