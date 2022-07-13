@@ -11,12 +11,14 @@
 </head>
 <body>
 	<div class="container">
-
 	<header class="container-fluid row justify-content-between m-4">
 		<div class="col-auto">
 			<a th:href="@{/home/room/}+${homeId}">ChatApp</a>
 		</div>
-		<div class="col text-right" th:if="${session.user.name}" th:text="${session.user.name}">Name</div>
+		<div class="col-auto">現在のRoomID：
+		<span th:text="${roomId}" id="roomIdNow"></span>
+		</div>
+		<div class="col text-right" th:if="${session.user.name}" th:text="${session.user.name}" th:data-value="${session.user.userId}" id="userName">Name</div>
 		<div class="col-auto">
 			<a th:href="@{/home/logout}">Logout</a>
 			</div>
@@ -29,19 +31,19 @@
 			</div><br>
 			<div>Room ID</div>
 			<form th:action="@{/home/enter}" method="post" id="enterForm">
-				<input type="text" name="roomId" id="roomId"><br>
+				<input type="text" name="roomId" id="nextRoomId"><br>
 				<button type="submit" id="enterRoom">入室</button>
 			</form>
 		</div>
 
 		<div id="main-content" class="h-100 col border" tabindex = "0" style="overflow-y:scroll;">
 			<table id="conversation" class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th>Messages</th>
-					</tr>
-				</thead>
 				<tbody id="greetings">
+					<tr th:each="chat : ${chatList}">
+						<td>
+							<span th:text="${chat.userName}"></span> : <span th:text="${chat.content}"></span>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -50,9 +52,7 @@
 	<div class="row justify-content-end g-2">
 		<div class="col-4">
 		<form action="" id="sendChat">
-			<label for="name">Name</label>
-			<input type="text" id="name" th:value="${session.user.name}">
-			<br>
+			<input type="hidden" id="name" th:value="${session.user.name}">
 			<label for="message">Message</label>
 			<input type="text" id="message">
 			<br>

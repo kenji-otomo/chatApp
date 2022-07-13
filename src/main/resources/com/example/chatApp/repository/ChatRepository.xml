@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.chatApp.repository.ChatRepository">
+
+<resultMap id="chatMap" type="com.example.chatApp.domain.Chat">
+		<id			property="chatId"			column="chat_id" ></id>
+		<result 	property="userFk"			column="user_fk" ></result>
+		<result 	property="content"			column="content" ></result>
+		<result 	property="pictureFk"		column="c.picture_fk" ></result>
+		<result 	property="createdTime"		column="c.created_time" />
+		<result 	property="updatedTime"		column="c.updated_time" />
+		<result 	property="deleted"  		column="c.deleted" />
+		<result 	property="roomFk"  			column="room_fk" />
+		<result 	property="userName"  		column="user_name" />
+		<result 	property="userPictureFk"  	column="user_picture_fk" />
+	</resultMap>
+
+   <select id="searchChatByRoomId" resultMap="chatMap">
+	SELECT 
+	c.chat_id AS chat_id 
+	,c.user_fk AS user_fk 
+	,c.content AS content 
+	,c.picture_fk
+	,c.created_time
+	,c.updated_time
+	,c.deleted 
+	,c.room_fk AS room_fk
+	,u.name AS user_name
+	,u.picture_fk AS user_picture_fk 
+	FROM chats AS c
+	JOIN 
+	users AS u 
+	on c.user_fk = u.user_id 
+	WHERE c.room_fk = #{roomFk} 
+	ORDER BY created_time ASC;
+  </select>
+  
+<!--   <select id="searchUserByMail" resultMap="chatMap">
+  	SELECT * FROM users WHERE mail = #{mail};
+  </select>
+ -->  
+  <insert id="createChat" useGeneratedKeys="true" keyProperty="chatId">
+  	INSERT INTO chats (user_fk,content,picture_fk,created_time,updated_time,deleted,room_fk)
+  	 VALUES (#{userFk},#{content},#{pictureFk},now(),now(),#{deleted},#{roomFk})
+  	<selectKey resultType="int" keyProperty="chatId" order="AFTER">
+        	select @IDENTITY
+	</selectKey>
+  </insert>
+
+<!--   <update id="updateUser">
+		UPDATE
+		users 
+		<set>
+			<if test="name != null">name = #{name},</if>
+			<if test="mail != null">mail = #{mail},</if>
+			<if test="pass != null">pass = #{pass} ,</if>
+			<if test="pictureFk != null">picture_fk = #{pictureFk},</if>
+			<if test="deleted != null">deleted = #{deleted}</if>
+			updated_time = now() 
+		</set>
+		WHERE
+		user_id = #{userId};
+	</update>
+ -->
+</mapper>

@@ -15,7 +15,6 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public User addUser(User user) {
-		user.setDeleted(false);
 		userRepository.addUser(user);
 		return user;
 	}

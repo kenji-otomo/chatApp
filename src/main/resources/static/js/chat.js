@@ -1,10 +1,12 @@
-var stompClient = null;
+let stompClient = null;
+let roomId;
+let userId;
 
 function connect() {
-    var socket = new SockJS('/websocket');
+    let socket = new SockJS('/websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
-        stompClient.subscribe('/topics/greetings', function (greeting) {
+        stompClient.subscribe('/topics/greetings/'+roomId, function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
             scroll();
         });
@@ -12,7 +14,8 @@ function connect() {
 }
 
 function sendMessage() {
-    stompClient.send("/send/chat", {}, JSON.stringify({'name': $("#name").val(),'message': $("#message").val()}));
+    stompClient.send("/send/chat/"+roomId, {}, JSON.stringify({'name' : $("#name").val(),'message' : $("#message").val(),
+    	'roomId' : roomId, 'userId' : userId}));
     $("#message").val('');
 }
 
@@ -22,6 +25,12 @@ function showGreeting(message) {
 
 $(function () {
 	connect();
+	roomId = $('#roomIdNow').text();
+	console.log(roomId);
+    userId = $('#userName').data('value');
+    console.log(userId);
+    scroll();
+
     $("#sendChat").on('submit', function (e) {
         e.preventDefault();
     });
@@ -31,6 +40,6 @@ $(function () {
 });
 
 function scroll(){
-    var maincontent = document.getElementById('conversation');
+    let maincontent = document.getElementById('greetings');
     maincontent.scrollIntoView(false);
 }

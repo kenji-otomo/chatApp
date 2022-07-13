@@ -2,6 +2,7 @@ package com.example.chatApp.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,10 @@ import com.example.chatApp.service.UserService;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
+	// ホーム画面のRoomID
+	@Value("${home.id}")
+	private String homeId;
 
 	@Autowired
 	private UserService userService;
@@ -60,9 +65,12 @@ public class UserController {
 			return "createUser";
 		}
 		
+		
+		
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
 		user = userService.addUser(user);
-		return "redirect:/home";
+		return "redirect:/";
 	}
+	
 }
