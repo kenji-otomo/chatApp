@@ -1,5 +1,7 @@
 package com.example.chatApp.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.chatApp.domain.Chat;
+import com.example.chatApp.service.ChatService;
 
 @Controller
 @RequestMapping("/home")
@@ -19,6 +24,8 @@ public class HomeController {
 
 	@Autowired
 	private HttpSession session;
+	@Autowired
+	private ChatService chatService;
 	
 //	@RequestMapping("")
 //	public String home() {
@@ -28,7 +35,13 @@ public class HomeController {
 	@RequestMapping("room/{roomId}")
 	public String page(@PathVariable String roomId,Model model) {
 		System.out.println("roomID:"+roomId);
+		Chat chat = new Chat();
+		chat.setRoomFk(roomId);
+		List<Chat> chatList = chatService.searchChatByRoomId(chat);
+		System.out.println(chatList);
+		model.addAttribute("chatList", chatList);
 		model.addAttribute("homeId",homeId);
+		model.addAttribute("roomId",roomId);		
 		return "home";
 	}
 	
