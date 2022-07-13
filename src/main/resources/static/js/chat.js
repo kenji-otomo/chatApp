@@ -27,7 +27,7 @@ $(function () {
 	connect();
 	roomId = $('#roomIdNow').text();
 	console.log(roomId);
-    userId = $('#userName').data('value');
+    userId = $('#userId').val();
     console.log(userId);
     scroll();
 

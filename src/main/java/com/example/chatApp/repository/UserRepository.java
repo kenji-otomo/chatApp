@@ -37,5 +37,5 @@ public interface UserRepository {
 	 * ユーザを更新する（セットされた項目のみを更新）
 	 * @param user
 	 */
-	public void updatedUser(User user);
+	public void updateUser(User user);
 }

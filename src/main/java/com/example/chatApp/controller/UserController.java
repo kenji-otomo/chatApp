@@ -1,5 +1,7 @@
 package com.example.chatApp.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.chatApp.domain.User;
 import com.example.chatApp.form.AddUserForm;
+import com.example.chatApp.form.UpdateUserForm;
 import com.example.chatApp.service.UserService;
 
 /**
@@ -31,10 +34,16 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private HttpSession session;
 	
 	@ModelAttribute
 	public AddUserForm setUpAddUserForm() {
 		return new AddUserForm();
+	}
+	@ModelAttribute
+	private UpdateUserForm setUpUpdateUserForm() {
+		return new UpdateUserForm();
 	}
 	
 	/**
@@ -61,16 +70,39 @@ public class UserController {
 		}
 		// パスワードが一致しなかった場合
 		if (!form.getPass().equals(form.getConfirmPass())) {
-			model.addAttribute("passerror", "パスワードが一致していません");
+			model.addAttribute("message", "パスワードが一致していません");
 			return "createUser";
 		}
 		
-		
-		
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
+		
+		// メールアドレス重複確認
+		User dbUser = userService.searchUserByMail(user);
+		if (dbUser != null) {
+			model.addAttribute("message", "このメールアドレスは既に使用されています");
+			return "createUser";
+		}
+		
 		user = userService.addUser(user);
 		return "redirect:/";
 	}
 	
+	@GetMapping("/updateUser")
+	public String showUpdateUser(Model model) {
+		model.addAttribute("homeId",homeId);
+		return "updateUser";
+	}
+	
+	@PostMapping("/updateUser")
+	public String updateUser(UpdateUserForm form) {
+		
+		User user = new User();
+		BeanUtils.copyProperties(form, user);
+		
+		user = userService.updateUser(user);
+		
+		session.setAttribute("user", user); 
+		return "redirect:/";
+	}
 }

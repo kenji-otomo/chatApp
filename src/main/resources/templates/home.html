@@ -18,7 +18,10 @@
 		<div class="col-auto">現在のRoomID：
 		<span th:text="${roomId}" id="roomIdNow"></span>
 		</div>
-		<div class="col text-right" th:if="${session.user.name}" th:text="${session.user.name}" th:data-value="${session.user.userId}" id="userName">Name</div>
+		<div class="col text-right">
+			<a th:href="@{/user/updateUser}" th:if="${session.user.name}" th:text="${session.user.name}" id="userName"></a>
+		</div>
+		<input type="hidden" name="userId" th:value="${session.user.userId}"  id="userId">
 		<div class="col-auto">
 			<a th:href="@{/home/logout}">Logout</a>
 			</div>

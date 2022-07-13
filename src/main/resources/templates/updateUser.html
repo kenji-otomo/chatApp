@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ユーザ情報変更</title>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <form th:action="@{/user/updateUser}" method="post" th:object="${updateUserForm}">
+        <label for="name">Name</label>
+        <input type="text" name="name" th:value="${session.user.name}" id="name">
+        <br>
+        <label for="mail">Mail</label>
+        <input type="text" name="mail" th:value="${session.user.mail}" id="mail">
+        <br>
+        <label for="pass">Password</label>
+        <input type="password" name="pass" th:value="${session.user.pass}" id="pass">
+        <label for="confirmPass">ConfirmPassword</label>
+        <input type="password" th:field="*{confirmPass}" id="confirmPass">
+        <button type="submit">登録</button>
+    </form>
+    <br>
+    <a th:href="@{/home/room/}+${homeId}">TOP画面へ戻る</a>
+</body>
+</html>

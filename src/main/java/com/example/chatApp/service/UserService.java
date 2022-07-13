@@ -19,5 +19,14 @@ public class UserService {
 		return user;
 	}
 		
+	public User updateUser(User user) {
+		userRepository.updateUser(user);
+		user = userRepository.searchUser(user);
+		return user;
+	}
 	
+	public User searchUserByMail(User user) {
+		user = userRepository.searchUserByMail(user);
+		return user;
+	}
 }
