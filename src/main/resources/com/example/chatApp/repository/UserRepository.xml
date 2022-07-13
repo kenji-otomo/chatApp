@@ -19,6 +19,10 @@
   <select id="searchUser" resultMap="userMap">
 	SELECT * FROM users WHERE user_id = #{userId};
   </select>
+  
+  <select id="searchUserByMail" resultMap="userMap">
+  	SELECT * FROM users WHERE mail = #{mail};
+  </select>
 
   <insert id="addUser" useGeneratedKeys="true" keyProperty="userId">
   	INSERT INTO users (name,mail,pass,picture_fk,created_time,updated_time,deleted)

@@ -22,7 +22,7 @@ function showGreeting(message) {
 
 $(function () {
 	connect();
-    $("form").on('submit', function (e) {
+    $("#sendChat").on('submit', function (e) {
         e.preventDefault();
     });
     $( "#connect" ).click(function() { connect(); });

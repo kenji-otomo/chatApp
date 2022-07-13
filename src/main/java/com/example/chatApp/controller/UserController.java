@@ -63,6 +63,6 @@ public class UserController {
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
 		user = userService.addUser(user);
-		return "redirect:/index/page";
+		return "redirect:/home";
 	}
 }

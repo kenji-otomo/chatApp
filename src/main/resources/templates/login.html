@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="container-fluid row justify-content-between m-4 text-white p-3">
+            <div class="col-auto text-white">
+                <a th:href="@{/index/page}">ChatApp</a>
+            </div>
+       </header>
+       <div class="row justify-content-center">
+    <form th:action="@{/login}" method="post" th:object="${loginForm}">
+        <div th:if="${message}" th:text="${message}" style="color: red;">aaaa</div>
+        <div th:errors="*{mail}" style="color: red;"></div>
+        <label for="mail">Mail</label>
+        <input type="text" th:field="*{mail}" id="mail">
+        <br>
+        <div th:errors="*{pass}" style="color: red;"></div>
+        <label for="pass">Password</label>
+        <input type="password" th:field="*{pass}" id="pass">
+        <br>
+        <button type="submit">ログイン</button>
+    </form>
+    <br>
+</div>
+    <div class="row justify-content-center">
+    	<a th:href="@{/user/createUser}">新規登録</a>
+    </div>
+</div>
+</body>
+</html>

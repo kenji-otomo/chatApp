@@ -13,11 +13,18 @@ import com.example.chatApp.domain.User;
 public interface UserRepository {
 
 	/**
-	 * 一人のユーザ検索（主キー）
+	 * 主キーによるユーザ検索
 	 * @param user
 	 * @return　user 
 	 */
 	public User searchUser(User user);
+	
+	/**
+	 * メールによるユーザ検索（対象1人）
+	 * @param user
+	 * @return
+	 */
+	public User searchUserByMail(User user);
 	
 	/**
 	 * ユーザをインサートする

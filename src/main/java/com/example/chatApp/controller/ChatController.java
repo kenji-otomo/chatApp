@@ -19,4 +19,5 @@ public class ChatController {
 				+ " : "
 				+ HtmlUtils.htmlEscape(message.getMessage()));
 	}
+	
 }
