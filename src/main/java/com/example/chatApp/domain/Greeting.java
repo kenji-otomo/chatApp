@@ -15,6 +15,9 @@ public class Greeting {
 		this.content = content;
 	}
 
+	public void setGreeting(String content) {
+		this.content = content;
+	}
 	@Override
 	public String toString() {
 		return "Greeting [content=" + content + "]";

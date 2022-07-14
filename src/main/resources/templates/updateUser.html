@@ -7,14 +7,15 @@
 </head>
 <body>
     <form th:action="@{/user/updateUser}" method="post" th:object="${updateUserForm}">
+    	<input type="hidden" name="userId" th:value="${session.user.userId}">
         <label for="name">Name</label>
-        <input type="text" name="name" th:value="${session.user.name}" id="name">
+        <input type="text" name="name" th:placeholder="${session.user.name}" id="name">
         <br>
         <label for="mail">Mail</label>
-        <input type="text" name="mail" th:value="${session.user.mail}" id="mail">
+        <input type="text" name="mail" th:placeholder="${session.user.mail}" id="mail">
         <br>
         <label for="pass">Password</label>
-        <input type="password" name="pass" th:value="${session.user.pass}" id="pass">
+        <input type="password" name="pass" th:placeholder="${session.user.pass}" id="pass">
         <label for="confirmPass">ConfirmPassword</label>
         <input type="password" th:field="*{confirmPass}" id="confirmPass">
         <button type="submit">登録</button>

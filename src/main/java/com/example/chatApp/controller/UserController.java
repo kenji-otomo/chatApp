@@ -1,5 +1,7 @@
 package com.example.chatApp.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.chatApp.domain.Greeting;
 import com.example.chatApp.domain.User;
 import com.example.chatApp.form.AddUserForm;
 import com.example.chatApp.form.UpdateUserForm;
@@ -77,6 +80,13 @@ public class UserController {
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
 		
+		user = userService.stripUser(user);
+		List<Greeting> messageList = userService.validationCheck(user);
+		if (!messageList.isEmpty()) {
+			model.addAttribute("message", messageList);
+			return "createUser";
+		}
+		
 		// メールアドレス重複確認
 		User dbUser = userService.searchUserByMail(user);
 		if (dbUser != null) {
@@ -99,7 +109,6 @@ public class UserController {
 		
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
-		
 		user = userService.updateUser(user);
 		
 		session.setAttribute("user", user); 

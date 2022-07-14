@@ -40,7 +40,7 @@
 			<if test="mail != null">mail = #{mail},</if>
 			<if test="pass != null">pass = #{pass} ,</if>
 			<if test="pictureFk != null">picture_fk = #{pictureFk},</if>
-			<if test="deleted != null">deleted = #{deleted}</if>
+			<if test="deleted != null">deleted = #{deleted},</if>
 			updated_time = now() 
 		</set>
 		WHERE
