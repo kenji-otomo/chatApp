@@ -6,7 +6,11 @@
 <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div th:if="${message}" th:text="${message}" class="text-danger"></div>
+    <div th:if="${message}" class="text-danger">
+        <div th:each="message : ${message}">
+            <span th:text="${message.content}"></span>
+        </div>
+    </div>
     
     <form th:action="@{/user/createUser}" method="post" th:object="${addUserForm}">
         <div th:errors="*{name}" class="text-danger"></div>

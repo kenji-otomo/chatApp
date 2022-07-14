@@ -2,11 +2,18 @@ package com.example.chatApp.form;
 
 public class UpdateUserForm {
 
+	private Integer userId;
 	private String name;
 	private String mail;
 	private String pass;
 	private String confirmPass;
 	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 	public String getName() {
 		return name;
 	}
@@ -33,6 +40,7 @@ public class UpdateUserForm {
 	}
 	@Override
 	public String toString() {
-		return "AddUserForm [name=" + name + ", mail=" + mail + ", pass=" + pass + ", confirmPass=" + confirmPass + "]";
+		return "UpdateUserForm [userId=" + userId + ", name=" + name + ", mail=" + mail + ", pass=" + pass
+				+ ", confirmPass=" + confirmPass + "]";
 	}
 }
