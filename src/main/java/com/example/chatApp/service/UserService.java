@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.chatApp.domain.Greeting;
 import com.example.chatApp.domain.User;
 import com.example.chatApp.repository.UserRepository;
 
@@ -67,18 +66,18 @@ public class UserService {
 		return user;
 	}
 	
-	public List<Greeting> validationCheck(User user) {
-		List<Greeting> messageList = new ArrayList<>();
+	public List<String> validationCheck(User user) {
+		List<String> messageList = new ArrayList<>();
 		if (user.getName() == null) {
-			messageList.add(new Greeting("名前は必須入力項目です"));
+			messageList.add("名前は必須入力項目です");
 		}
 		if (user.getMail() == null) {
-			messageList.add(new Greeting("メールアドレスは必須入力項目です"));
+			messageList.add("メールアドレスは必須入力項目です");
 		}
 		if (user.getPass() == null) {
-			messageList.add(new Greeting("パスワードは必須入力項目です"));
+			messageList.add("パスワードは必須入力項目です");
 		}else if (8 > user.getPass().length() || user.getPass().length() > 16) {
-			messageList.add(new Greeting("パスワードは8文字以上16文字以内で入力してください"));
+			messageList.add("パスワードは8文字以上16文字以内で入力してください");
 		}
 		
 		return messageList;

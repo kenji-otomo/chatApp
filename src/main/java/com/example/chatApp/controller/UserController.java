@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.chatApp.domain.Greeting;
 import com.example.chatApp.domain.User;
 import com.example.chatApp.form.AddUserForm;
 import com.example.chatApp.form.UpdateUserForm;
@@ -81,7 +80,7 @@ public class UserController {
 		BeanUtils.copyProperties(form, user);
 		
 		user = userService.stripUser(user);
-		List<Greeting> messageList = userService.validationCheck(user);
+		List<String> messageList = userService.validationCheck(user);
 		if (!messageList.isEmpty()) {
 			model.addAttribute("message", messageList);
 			return "createUser";
@@ -105,10 +104,18 @@ public class UserController {
 	}
 	
 	@PostMapping("/updateUser")
-	public String updateUser(UpdateUserForm form) {
+	public String updateUser(UpdateUserForm form,Model model) {
 		
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
+		
+		user = userService.stripUser(user);
+		List<String> messageList = userService.validationCheck(user);
+		if (!messageList.isEmpty()) {
+			model.addAttribute("message", messageList);
+			return "updateUser";
+		}
+		
 		user = userService.updateUser(user);
 		
 		session.setAttribute("user", user); 
