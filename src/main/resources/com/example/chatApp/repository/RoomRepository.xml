@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.chatApp.repository.RoomRepository">
+
+<resultMap id="roomMap" type="com.example.chatApp.domain.Room">
+		<id			property="roomId"			column="room_id" ></id>
+		<result 	property="roomName"  		column="room_name" />
+		<result 	property="roomPass"			column="room_pass" ></result>
+		<result 	property="privateRoom"		column="private_room" ></result>
+		<result 	property="createdTime"		column="room_created_time" />
+		<result 	property="updatedTime"		column="room_updated_time" />
+		<result 	property="deleted"  		column="room_deleted" />
+		<collection property="roomUserList" ofType="com.example.chatApp.domain.User">
+			<id			property="userId"			column="user_id" ></id>
+			<result 	property="name"				column="user_name" ></result>
+			<result 	property="mail"				column="user_mail" ></result>
+			<result 	property="pass"				column="user_pass"></result>
+			<result 	property="pictureFk"		column="user_picture_fk" ></result>
+			<result 	property="createdTime"		column="user_created_time" />
+			<result 	property="updatedTime"		column="user_updated_time" />
+			<result 	property="deleted"  		column="user_deleted" />
+		</collection>
+	</resultMap>
+
+   <select id="searchRoomByRoomId" resultMap="roomMap">
+	SELECT 
+	r.room_id AS room_id 
+	, r.room_name AS room_name 
+	, r.room_pass AS room_pass 
+	, r.private_room AS private_room 
+	, r.created_time AS room_created_time 
+	, r.updated_time AS room_updated_time 
+	, r.deleted AS room_deleted 
+	, u.user_id AS user_id 
+	, u.name AS user_name 
+	, u.mail AS user_mail 
+	, u.pass AS user_pass 
+	, u.picture_fk  AS user_picture_fk 
+	, u.created_time AS user_created_time 
+	, u.updated_time AS user_updated_time 
+	, u.deleted AS user_deleted 
+	FROM rooms AS r
+	JOIN 
+	user_in_rooms AS uir 
+	on r.room_id = uir.room_fk 
+	JOIN 
+	users AS u 
+	on uir.user_fk = u.user_id 
+	WHERE r.room_id = #{roomId} 
+	ORDER BY r.created_time ASC;
+  </select>
+  
+   <select id="searchRoomByUserId" resultMap="roomMap">
+	SELECT 
+	r.room_id AS room_id 
+	, r.room_name AS room_name 
+	, r.room_pass AS room_pass 
+	, r.private_room AS private_room 
+	, r.created_time AS room_created_time 
+	, r.updated_time AS room_updated_time 
+	, r.deleted AS room_deleted 
+	, u.user_id AS user_id 
+	, u.name AS user_name 
+	, u.mail AS user_mail 
+	, u.pass AS user_pass 
+	, u.picture_fk  AS user_picture_fk 
+	, u.created_time AS user_created_time 
+	, u.updated_time AS user_updated_time 
+	, u.deleted AS user_deleted 
+	FROM rooms AS r
+	JOIN 
+	user_in_rooms AS uir 
+	on r.room_id = uir.room_fk 
+	JOIN 
+	users AS u 
+	on uir.user_fk = u.user_id 
+	WHERE room_id in (
+	SELECT ro.room_id FROM 
+	rooms AS ro 
+	JOIN 
+	user_in_rooms AS uiro 
+	on ro.room_id = uiro.room_fk 
+	WHERE 
+	uiro.user_fk = #{userId} 
+	) 
+	ORDER BY r.created_time ASC;
+  </select>
+  
+  <insert id="createRoom">
+  	INSERT INTO rooms (room_id,room_name,room_pass,private_room,created_time,updated_time,deleted)
+  	 VALUES (#{roomId},#{roomName},#{roomPass},#{privateRoom},now(),now(),#{deleted})
+  </insert>
+
+</mapper>

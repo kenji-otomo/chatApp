@@ -6,8 +6,8 @@ function connect() {
     let socket = new SockJS('/websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function () {
-        stompClient.subscribe('/topics/greetings/'+roomId, function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+        stompClient.subscribe('/topics/greetings/'+roomId, function (chat) {
+            showGreeting(JSON.parse(chat.body).content);
             scroll();
         });
     });
@@ -21,14 +21,17 @@ function sendMessage() {
 
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
+    if ($('#no-message').length) {
+        $('#no-message').remove();
+    }
 }
 
 $(function () {
 	connect();
-	roomId = $('#roomIdNow').text();
-	console.log(roomId);
+	roomId = $('#roomIdNow').data('value');
+	// console.log(roomId);
     userId = $('#userId').val();
-    console.log(userId);
+    // console.log(userId);
     scroll();
 
     $("#sendChat").on('submit', function (e) {

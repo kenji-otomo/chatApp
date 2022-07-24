@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
 import com.example.chatApp.domain.Chat;
-import com.example.chatApp.domain.Greeting;
 import com.example.chatApp.form.Message;
 import com.example.chatApp.service.ChatService;
 
@@ -19,19 +18,21 @@ public class ChatController {
 
 	@MessageMapping("/chat/{roomId}")
 	@SendTo("/topics/greetings/{roomId}")
-	public Greeting sendChat(Message message) {
+	public Chat sendChat(Message message) {
 //		System.out.println(message);
 //		System.out.println("roomId:"+roomId);
-		System.out.println("roomId:"+message.getRoomId());
-		System.out.println("userId:"+message.getUserId());
+//		System.out.println("roomId:"+message.getRoomId());
+//		System.out.println("userId:"+message.getUserId());
 		
 		Chat chat = new Chat(message.getUserId(),message.getMessage(),message.getRoomId());
-		System.out.println(chat);
+//		System.out.println(chat);
 		chatService.createChat(chat);
 		
-		return new Greeting(HtmlUtils.htmlEscape(message.getName())
+		chat.setContent(HtmlUtils.htmlEscape(message.getName())
 				+ " : "
 				+ HtmlUtils.htmlEscape(message.getMessage()));
+		
+		return chat;
 	}
 	
 }

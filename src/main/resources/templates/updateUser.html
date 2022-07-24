@@ -6,6 +6,11 @@
 <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<div th:if="${message}" class="text-danger">
+        <div th:each="message : ${message}">
+            <span th:text="${message}"></span>
+        </div>
+    </div>
     <form th:action="@{/user/updateUser}" method="post" th:object="${updateUserForm}">
     	<input type="hidden" name="userId" th:value="${session.user.userId}">
         <label for="name">Name</label>

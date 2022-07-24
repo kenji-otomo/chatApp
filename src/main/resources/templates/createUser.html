@@ -8,7 +8,7 @@
 <body>
     <div th:if="${message}" class="text-danger">
         <div th:each="message : ${message}">
-            <span th:text="${message.content}"></span>
+            <span th:text="${message}"></span>
         </div>
     </div>
     
