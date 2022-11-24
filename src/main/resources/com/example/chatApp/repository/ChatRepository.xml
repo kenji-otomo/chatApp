@@ -9,7 +9,7 @@
 		<id			property="chatId"			column="chat_id" ></id>
 		<result 	property="userFk"			column="user_fk" ></result>
 		<result 	property="content"			column="content" ></result>
-		<result 	property="pictureFk"		column="c.picture_fk" ></result>
+		<result 	property="picturePath"		column="picture_path" ></result>
 		<result 	property="createdTime"		column="c.created_time" />
 		<result 	property="updatedTime"		column="c.updated_time" />
 		<result 	property="deleted"  		column="c.deleted" />
@@ -23,7 +23,7 @@
 	c.chat_id AS chat_id 
 	,c.user_fk AS user_fk 
 	,c.content AS content 
-	,c.picture_fk
+	,c.picture_path AS picture_path
 	,c.created_time
 	,c.updated_time
 	,c.deleted 
@@ -43,8 +43,8 @@
   </select>
  -->  
   <insert id="createChat" useGeneratedKeys="true" keyProperty="chatId">
-  	INSERT INTO chats (user_fk,content,picture_fk,created_time,updated_time,deleted,room_fk)
-  	 VALUES (#{userFk},#{content},#{pictureFk},now(),now(),#{deleted},#{roomFk})
+  	INSERT INTO chats (user_fk,content,picture_path,created_time,updated_time,deleted,room_fk)
+  	 VALUES (#{userFk},#{content},#{picturePath},now(),now(),#{deleted},#{roomFk})
   	<selectKey resultType="int" keyProperty="chatId" order="AFTER">
         	select @IDENTITY
 	</selectKey>

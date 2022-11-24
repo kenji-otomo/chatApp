@@ -6,7 +6,21 @@ public class Message {
 	private String message;
 	private String roomId;
 	private Integer userId;
+	private String image;
+	private String imageName;
 	
+	public String getImageName() {
+		return imageName;
+	}
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public String getName() {
 		return name;
 	}
@@ -33,6 +47,7 @@ public class Message {
 	}
 	@Override
 	public String toString() {
-		return "Message [name=" + name + ", message=" + message + ", roomId=" + roomId + ", userId=" + userId + "]";
+		return "Message [name=" + name + ", message=" + message + ", roomId=" + roomId + ", userId=" + userId
+				+ ", image=" + image + ", imageName=" + imageName + "]";
 	}
 }

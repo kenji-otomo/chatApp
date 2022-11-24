@@ -10,6 +10,7 @@ import com.example.chatApp.domain.Chat;
 import com.example.chatApp.form.Message;
 import com.example.chatApp.service.ChatService;
 
+
 @RestController
 public class ChatController {
 
@@ -19,19 +20,21 @@ public class ChatController {
 	@MessageMapping("/chat/{roomId}")
 	@SendTo("/topics/greetings/{roomId}")
 	public Chat sendChat(Message message) {
-//		System.out.println(message);
-//		System.out.println("roomId:"+roomId);
-//		System.out.println("roomId:"+message.getRoomId());
-//		System.out.println("userId:"+message.getUserId());
 		
-		Chat chat = new Chat(message.getUserId(),message.getMessage(),message.getRoomId());
-//		System.out.println(chat);
+		Chat chat = new Chat(message.getUserId(), message.getMessage(), message.getRoomId());
+
+		if (message.getImage() != null) {
+			String fileName = chatService.saveImg(message);
+			chat.setPicturePath(fileName);
+		}
+
 		chatService.createChat(chat);
-		
-		chat.setContent(HtmlUtils.htmlEscape(message.getName())
+
+		String content = HtmlUtils.htmlEscape(message.getName())
 				+ " : "
-				+ HtmlUtils.htmlEscape(message.getMessage()));
+				+ HtmlUtils.htmlEscape(message.getMessage());
 		
+		chat.setContent(content);
 		return chat;
 	}
 	
