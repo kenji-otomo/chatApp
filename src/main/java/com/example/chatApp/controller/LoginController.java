@@ -52,7 +52,6 @@ public class LoginController {
 	public String login(@Validated LoginForm form, BindingResult result, Model model) {
 		// バリデーションチェック
 		if (result.hasErrors()) {
-			model.addAttribute("message", "バリデーションに引っ掛かりました");
 			return "login";
 		}
 		// DBのユーザ検索

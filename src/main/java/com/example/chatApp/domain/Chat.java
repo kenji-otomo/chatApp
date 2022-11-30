@@ -7,7 +7,7 @@ public class Chat {
 	private Integer chatId;
 	private Integer userFk;
 	private String content;
-	private Integer pictureFk;
+	private String picturePath;
 	private LocalDateTime createdTime;
 	private LocalDateTime updatedTime;
 	private boolean deleted;
@@ -42,11 +42,11 @@ public class Chat {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Integer getPictureFk() {
-		return pictureFk;
+	public String getPicturePath() {
+		return picturePath;
 	}
-	public void setPictureFk(Integer pictureFk) {
-		this.pictureFk = pictureFk;
+	public void setPicturePath(String picturePath) {
+		this.picturePath = picturePath;
 	}
 	public LocalDateTime getCreatedTime() {
 		return createdTime;
@@ -86,7 +86,7 @@ public class Chat {
 	}
 	@Override
 	public String toString() {
-		return "Chat [chatId=" + chatId + ", userFk=" + userFk + ", content=" + content + ", pictureFk=" + pictureFk
+		return "Chat [chatId=" + chatId + ", userFk=" + userFk + ", content=" + content + ", picturePath=" + picturePath
 				+ ", createdTime=" + createdTime + ", updatedTime=" + updatedTime + ", deleted=" + deleted + ", roomFk="
 				+ roomFk + ", userName=" + userName + ", userPictureFk=" + userPictureFk + "]";
 	}

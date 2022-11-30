@@ -1,8 +1,8 @@
 package com.example.chatApp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.chatApp.domain.Chat;
 import com.example.chatApp.domain.Room;
+import com.example.chatApp.domain.User;
 import com.example.chatApp.form.CreateRoomForm;
 import com.example.chatApp.service.ChatService;
 import com.example.chatApp.service.RoomService;
+
 
 @Controller
 @RequestMapping("/home")
@@ -28,8 +30,6 @@ public class HomeController {
 	// ホーム画面のRoomID
 	@Value("${home.id}")
 	private String homeId;
-	// ルームに入室できる権限を判定するキー
-	private String primaryKey = "";
 	
 	@ModelAttribute
 	public CreateRoomForm setUpCreateRoomForm() {
@@ -43,69 +43,100 @@ public class HomeController {
 	@Autowired
 	private RoomService roomService;
 	
+	/**
+	 * チャットルームに入室します
+	 * @param roomId
+	 * @param model
+	 * @param key
+	 * @return
+	 */
 	@RequestMapping("room/{roomId}")
-	public String page(@PathVariable String roomId,Model model,String key) {
-		String privateKey = "privateList";
-		String publicKey = "publicList";
+	public String enterRoom(@PathVariable String roomId, Model model) {
 		
-		if (!roomId.equals(homeId) && !primaryKey.equals(key)) {
-			roomId = homeId;
-			model.addAttribute("message", "権限がありません");
+		Room room = new Room();
+		room.setRoomId(roomId);
+		
+		// 個別ルームに入室する場合、ログインユーザに権限があるか判断
+		if (!roomId.equals(homeId)) {
+			room = roomService.judgeUserInRoom(room);
 		}
-		
-		// RoomIDをセット
-		Chat chat = new Chat(null,null,roomId);
-		// RoomID に紐づいているチャットのリストを検索
-		List<Chat> chatList = chatService.searchChatByRoomId(chat);
-		// ログインしているユーザが所属しているルームのリストを検索
-		Map<String, List<Room>> roomMap = roomService.searchRoomByUserId(roomId);
-		List<Room> privateList = roomMap.get(privateKey);
-		List<Room> publicList = roomMap.get(publicKey);
-		// リクエストスコープに埋め込み
-		model.addAttribute("chatList", chatList);
-		model.addAttribute("homeId",homeId);
-		model.addAttribute("room",new Room(roomId));
-		model.addAttribute("privateList", privateList);
-		model.addAttribute("publicList", publicList);
+
+		// ユーザーがルームの入室権限を有していない場合、入室先をホーム画面に変更
+		if (!roomId.equals(homeId) && room == null) {
+			room = new Room(homeId);
+			model.addAttribute("message", "入室権限がありません");
+		}
+		// チャット画面を表示する共通処理
+		commonProcessViewHome(room, model);
 		
 		return "home";
 	}
 	
+	/**
+	 * ルームを作成します
+	 * @param form
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/createRoom")
-	public String createRoom(CreateRoomForm form,Model model) {
+	public String createRoom(CreateRoomForm form, Model model) {
 		
 		Room room = new Room();
-		
+		// 個人チャットかどうか
 		if (form.getPrivateUserFk() == null) {
+			// 公開部屋の場合、ルーム名に入力された名前をセット
 			room.setRoomName(form.getRoomName());
 		}else {
+			// 個人チャットの場合、privateRoom を true にする
 			room.setPrivateRoom(true);
 		}
+		// ルームを作成する
 		String roomId = roomService.createRoom(room,form.getUserId(),form.getPrivateUserFk());
 		
-		return enterTheRoom(roomId, model);
+		return enterRoom(roomId, model);
 	}
 
-	@RequestMapping("/enter")
-	public String enterTheRoom(String roomId,Model model) {
-
-		Room room = new Room();
-		room.setRoomId(roomId);
-		room = roomService.searchRoomByRoomId(room);
-		
-		primaryKey = UUID.randomUUID().toString();
-		
-		if (room == null) {
-			model.addAttribute("message", "権限がありません");
-			return page(homeId, model,primaryKey);
-		}
-		return page(roomId, model,primaryKey);
-	}
-
+	/**
+	 * ログアウトします
+	 * @return
+	 */
 	@RequestMapping("/logout")
 	public String logout() {
 		
 		session.removeAttribute("user");
 		return "redirect:/";
+	}
+	
+	/**
+	 * チャット画面を表示する共通処理です
+	 * @param roomId
+	 * @param model
+	 */
+	public void commonProcessViewHome(Room room, Model model) {
+		
+		String privateKey = "privateList";
+		String publicKey = "publicList";
+		
+		// RoomIDをセット
+		Chat chat = new Chat(null,null,room.getRoomId());
+		// RoomID に紐づいているチャットのリストを検索
+		List<Chat> chatList = chatService.searchChatByRoomId(chat);
+		// ログインしているユーザが所属しているルームのリストを検索
+		Map<String, List<Room>> roomMap = roomService.searchRoomInLoginUser(room.getRoomId());
+		List<Room> privateList = roomMap.get(privateKey);
+		List<Room> publicList = roomMap.get(publicKey);
+		List<User> userList = new ArrayList<>();
+		
+		if (!room.getRoomId().equals(homeId)) {
+			userList = room.getRoomUserList();
+			model.addAttribute("userList", userList);
+		}
+		
+		// リクエストスコープに埋め込み
+		model.addAttribute("chatList", chatList);
+		model.addAttribute("homeId", homeId);
+		model.addAttribute("room", room);
+		model.addAttribute("privateList", privateList);
+		model.addAttribute("publicList", publicList);
 	}
 }
