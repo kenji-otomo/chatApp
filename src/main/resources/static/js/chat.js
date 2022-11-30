@@ -4,9 +4,11 @@ let userId;
 let imageUrl;
 
 $(function () {
+	// APIと接続
 	connect();
 	roomId = $('#roomIdNow').data('value');
     userId = $('#userId').val();
+    // 最下部までスクロール
     scroll();
 
     $("#sendChat").on('submit', function (e) {
@@ -29,7 +31,7 @@ function connect() {
             scroll();
         });
     },onError);
-//    stompClient.debug = function(str) {};
+    stompClient.debug = function(str) {};
 }
 
 function sendMessage() {
@@ -45,7 +47,6 @@ function sendMessage() {
         previewImg.removeChild(previewImg.firstChild);
     }
     imageUrl = null;
-    console.log('sendMessage');
 };
 
 function showGreeting(chat) {
@@ -59,13 +60,11 @@ function showGreeting(chat) {
     if ($('#no-message').length) {
         $('#no-message').remove();
     }
-    console.log('showGreeting');
 }
 
 function scroll(){
     let maincontent = document.getElementById('greetings');
     maincontent.scrollIntoView(false);
-    console.log('scroll');
 }
 
 function preview(img) {
@@ -82,6 +81,8 @@ function preview(img) {
 }
 
 function onError() {
-    console.log('error');
-    alert('接続が切断されました。お手数ですが再ログインをお願い致します。');
+    let result = confirm('接続が切断されました。お手数ですが再ログインをお願い致します。\nログイン画面に遷移しますか？');
+    if (result) {
+        window.location.href = 'http://localhost:8080/';
+    }
 }
