@@ -35,13 +35,10 @@
 	users AS u 
 	on c.user_fk = u.user_id 
 	WHERE c.room_fk = #{roomFk} 
+	AND c.deleted = false 
 	ORDER BY created_time ASC;
   </select>
-  
-<!--   <select id="searchUserByMail" resultMap="chatMap">
-  	SELECT * FROM users WHERE mail = #{mail};
-  </select>
- -->  
+
   <insert id="createChat" useGeneratedKeys="true" keyProperty="chatId">
   	INSERT INTO chats (user_fk,content,picture_path,created_time,updated_time,deleted,room_fk)
   	 VALUES (#{userFk},#{content},#{picturePath},now(),now(),#{deleted},#{roomFk})
@@ -50,19 +47,4 @@
 	</selectKey>
   </insert>
 
-<!--   <update id="updateUser">
-		UPDATE
-		users 
-		<set>
-			<if test="name != null">name = #{name},</if>
-			<if test="mail != null">mail = #{mail},</if>
-			<if test="pass != null">pass = #{pass} ,</if>
-			<if test="pictureFk != null">picture_fk = #{pictureFk},</if>
-			<if test="deleted != null">deleted = #{deleted}</if>
-			updated_time = now() 
-		</set>
-		WHERE
-		user_id = #{userId};
-	</update>
- -->
 </mapper>

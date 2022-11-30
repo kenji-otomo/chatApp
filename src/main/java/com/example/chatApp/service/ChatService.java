@@ -68,7 +68,6 @@ public class ChatService {
 			file.write(img);
 			file.close();
 		} catch (IOException e) {
-			e.printStackTrace();
 			logger.error(messageSource.getMessage("error.message", null, Locale.JAPAN));
 		}
 

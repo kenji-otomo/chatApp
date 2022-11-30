@@ -28,7 +28,6 @@ public class RoomService {
 	@Autowired
 	private HttpSession session;
 	
-	
 	/**
 	 * ルーム作成
 	 * @param room

@@ -17,7 +17,6 @@
 			<id			property="userId"			column="user_id" ></id>
 			<result 	property="name"				column="user_name" ></result>
 			<result 	property="mail"				column="user_mail" ></result>
-			<result 	property="pass"				column="user_pass"></result>
 			<result 	property="pictureFk"		column="user_picture_fk" ></result>
 			<result 	property="createdTime"		column="user_created_time" />
 			<result 	property="updatedTime"		column="user_updated_time" />
@@ -37,7 +36,6 @@
 	, u.user_id AS user_id 
 	, u.name AS user_name 
 	, u.mail AS user_mail 
-	, u.pass AS user_pass 
 	, u.picture_fk  AS user_picture_fk 
 	, u.created_time AS user_created_time 
 	, u.updated_time AS user_updated_time 
