@@ -28,7 +28,15 @@
 			<a th:href="@{/home/room/}+${homeId}">ChatApp</a>
 		</div>
 		<div class="col-auto">現在のRoomID：
-		<span th:data-value="${room.roomId}" th:text="${room.roomId}" id="roomIdNow"></span>
+			<span th:data-value="${room.roomId}" th:text="${room.roomId}" id="roomIdNow"></span>
+		</div>
+		<div th:if="${userList}">
+			メンバー：
+		</div>
+		<div>
+			<div th:each="user : ${userList}">
+				<div th:text="${user.name}"></div>
+			</div>
 		</div>
 		<div class="col text-right">
 			<a th:href="@{/user/updateUser}" th:if="${session.user.name}" th:text="${session.user.name}" id="userName"></a>
@@ -69,7 +77,7 @@
 			<br>
 			<div th:if="${privateList.size}">privateList</div>
 				<div th:each="userRoom : ${privateList}">
-					<form th:action="@{/home/room/${userRoom.roomId}}" method="post">
+					<form th:action="@{/home/room/} + ${userRoom.roomId}" method="post">
 						<input type="hidden" name="roomId" th:value="${userRoom.roomId}">
 						<button type="submit" th:text="${userRoom.roomName}" class="btn btn-outline-success"></button>
 					</form>
